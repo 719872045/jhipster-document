@@ -6,7 +6,7 @@ redirect_from:
   - /docker_compose.html
 sitemap:
     priority: 0.7
-    lastmod: 2016-06-19T00:00:00-00:00
+    lastmod: 2016-12-01T00:00:00-00:00
 ---
 
 # <i class="fa fa-music"></i> Docker and Docker Compose
@@ -17,8 +17,8 @@ Using Docker and Docker Compose is highly recommended in development, and is als
 
 1. [Description](#1)
 2. [Prerequisites](#2)
-3. [Differences when using a microservices architecture](#microservices)
-4. [Building a Docker image of your application](#3)
+3. [Building a Docker image of your application](#3)
+4. [Generating a custom Docker-Compose configuration for multiple applications](#docker-compose-subgen)
 5. [Working with databases](#4)
 6. [Elasticsearch](#5)
 7. [Sonar](#6)
@@ -75,28 +75,6 @@ __Solution 2__
   - `npm install -g YOUR_PACKAGE`,
   - then exit and log into the container normally: `docker exec -it jhipster bash`
 
-## <a name="microservices"></a> Differences when using a microservices architecture
-
-_if you are working on a monolithic application, you can skip this section_
-
-If you have selected to generate a [microservices architecture]({{ site.url }}/microservices-architecture/), each application (gateway, microservice) has a `Dockerfile` and a Docker Compose configurations, like with a normal monolithic application.
-
-But you can use the specific `docker-compose` sub-generator, which will generate a global Docker Compose configuration for all your gateway(s) and microservices. This will allow you to deploy and scale your complete architecture with one command.
-
-- You need to have all your gateway(s) and microservices in the same directory.
-- Create another directory, for example `mkdir docker-compose`.
-- Go into that directory: `cd docker-compose`.
-- Run the sub-generator: `yo jhipster:docker-compose`.
-- The sub-generator will ask you which application you want to have in your architecture, and if you want to have monitoring with ELK included.
-
-This will generate a global Docker Compose configuration, type `docker-compose up` to run it, and have all your services running at once.
-
-This configuration will have a pre-configured JHipster Registry, that will configure your services automatically:
-
-- Those services will wait until the JHipster Registry is running until they can start (this can be configured in your `bootstrap-prod.yml` file using the `spring.cloud.config.fail-fast` and `spring.cloud.config.retry` keys).
-- The registry will configure your applications, for example it will share the JWT secret token between all services.
-- Scaling each service is done using Docker Compose, for example type `docker-compose scale test-app=4` to have 4 instances of application "test" running. Those instances will be automatically load-balanced by the gateway(s), and will automatically join the same Hazelcast cluster (if Hazelcast is your Hibernate 2nd-level cache).
-
 ## <a name="3"></a> Building and running a Docker image of your application
 
 To create a Docker image of your application, and push it into your Docker registry:
@@ -111,6 +89,26 @@ To run this image, use the Docker Compose configuration located in the `src/main
 - `docker-compose -f src/main/docker/app.yml up`
 
 This command will start up your application and the services it relies on (database, search engine, JHipster Registry...).
+
+## <a name="docker-compose-subgen"></a> Generating a custom Docker-Compose configuration for multiple applications
+
+If your architecture is composed of several JHipster applications, you can use the specific `docker-compose` sub-generator, which will generate a global Docker Compose configuration for all selected applications. This will allow you to deploy and scale your complete architecture with one command.
+To use the `docker-compose` subgenerator:
+
+- You need to have all your monolith(s), gateway(s) and microservices in the same directory.
+- Create another directory, for example `mkdir docker-compose`.
+- Go into that directory: `cd docker-compose`.
+- Run the sub-generator: `yo jhipster:docker-compose`.
+- The sub-generator will ask you which application you want to have in your architecture, and if you want to setup monitoring with ELK or Prometheus.
+
+This will generate a global Docker Compose configuration, type `docker-compose up` to run it, and have all your services running at once.
+
+In the case of a microservice architecture, this configuration will also pre-configure a JHipster Registry or Consul, that will configure your services automatically:
+
+- Those services will wait until the JHipster Registry (or Consul) is running to start. This can be configured in your `bootstrap-prod.yml` file using the `spring.cloud[.consul].config.fail-fast` and `spring.cloud[.consul].config.retry` keys.
+- The registry will configure your applications, for example it will share the JWT secret token between all services.
+- Scaling each service is done using Docker Compose, for example type `docker-compose scale test-app=4` to have 4 instances of application "test" running. Those instances will be automatically load-balanced by the gateway(s), and will automatically join the same Hazelcast cluster (if Hazelcast is your Hibernate 2nd-level cache).
+
 
 ## <a name="4"></a> Working with databases
 
@@ -162,6 +160,15 @@ The application starts after few seconds (see _JHIPSTER_SLEEP_ variable) to give
 One big difference between Cassandra and the other databases, is that you can scale your cluster with Docker Compose. To have X+1 nodes in your cluster, run:
 
 - `docker-compose -f src/main/docker/cassandra-cluster.yml scale <name_of_your_app>-cassandra-node=X`
+
+### Microsoft SQL Server
+
+If you want to use the MSSQL Docker image with JHipster, there are a few steps to follow:
+
+- Increase the RAM available to Docker to at least 3.25GB
+- Run the database: `docker-compose -f src/main/docker/mssql.yml up -d`
+- Create the database with a MSSQL client of your choice
+- Start your application: `docker-compose -f src/main/docker/app.yml up -d <name_of_your_app>-app`
 
 ## <a name="5"></a> Elasticsearch
 
@@ -237,14 +244,24 @@ In order to optimize memory usage for applications running in the container, you
 
 Set the environment variable.
 
-    ENV JAVA_OPTS=-Xmx512m -Xmx256m
+    ENV JAVA_OPTS=-Xmx512m -Xms256m
 
 ### Adding memory parameters to docker-compose.yml
 
 This solution is desired over Dockerfile. In this way, you have a single control point for your memory configuration on all containers that compose you application.
 
-Add the JAVA_OPTS into `environment` section.
+Add the `JAVA_OPTS` into `environment` section.
 
+```
     environment:
       - (...)
-      - JAVA_OPTS=-Xmx512m -Xmx256m
+      - JAVA_OPTS=-Xmx512m -Xms256m
+```
+
+Depending on the Docker base image, `JAVA_OPTS` won't work. In this case, try to use `_JAVA_OPTIONS` instead:
+
+```
+    environment:
+      - (...)
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+```

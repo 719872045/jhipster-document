@@ -6,7 +6,7 @@ redirect_from:
   - /creating_an_app.html
 sitemap:
     priority: 0.7
-    lastmod: 2014-06-02T00:00:00-00:00
+    lastmod: 2016-12-01T00:00:00-00:00
 ---
 
 # <i class="fa fa-rocket"></i> Creating an application
@@ -34,9 +34,11 @@ To generate your application, type:
 
 Answer the questions asked by the generator to create an application tailored to your needs. Those options are described in [the next section](#2).
 
-Once the application is generated, you can launch it using Maven (`./mvnw` on Linux/MacOS, `mvnw.cmd` on Windows) or Gradle (`./gradlew` on Linux/MacOS, `gradelw.bat` on Windows). You can go the [Using JHipster in development]({{ site.url }}/development/) page for more information.
+Once the application is generated, you can launch it using Maven (`./mvnw` on Linux/MacOS/Windows PowerShell, `mvnw` on Windows Cmd) or Gradle (`./gradlew` on Linux/MacOS/Windows PowerShell, `gradlew` on Windows Cmd).
 
 The application will be available on [http://localhost:8080](http://localhost:8080)
+
+**Important** if you want to have "live reload" of your JavaScript/TypeScript code, you will need run `gulp` (for JavaScript/AngularJS 1) or `yarn start` (for TypeScript/Angular 2+). You can go to the [Using JHipster in development]({{ site.url }}/development/) page for more information.
 
 ## <a name="2"></a> Questions asked when generating an application
 
@@ -51,6 +53,18 @@ You can either use:
 *   Monolithic application: this a classical, one-size-fits-all application. It's easier to use and develop, and is our recommended default.
 *   Microservice application: in a microservices architecture, this is one of the services.
 *   Microservice gateway: in a microservices architecture, this is an edge server that routes and secures requests.
+*   JHipster UAA server [BETA]: in a microservices architecture, this is an OAuth2 authentication server that secures microservices. Refer <a href="/using-uaa/">JHipster UAA documentation</a> for more information.
+
+### Which *Framework* would you like to use for the client?
+
+The client side framework to use.
+
+You can either use:
+
+*   AngularJS version 1.x
+*   Angular version 2+ [BETA]
+
+> Please note that Angular 2+ support is currently in BETA and hence may not be suitable for production use.
 
 ### What is the base name of your application?
 
@@ -75,7 +89,7 @@ The OAuth 2.0 and the JWT approaches allow to use a stateless application archit
 You can choose between:
 
 - No database (only available when using a [microservice application]({{ site.url }}/microservices-architecture/))
-- An SQL database (H2, MySQL, MariaDB, PostgreSQL, Oracle), which you will access with Spring Data JPA
+- An SQL database (H2, MySQL, MariaDB, PostgreSQL, MSSQL, Oracle), which you will access with Spring Data JPA
 - [MongoDB]({{ site.url }}/using-mongodb/)
 - [Cassandra]({{ site.url }}/using-cassandra/)
 
@@ -100,23 +114,35 @@ To configure it, please modify your `src/main/resources/config/application-dev.y
 [Hibernate](http://hibernate.org/) is the JPA provider used by JHipster. For performance reasons, we highly recommend you to use a cache, and to tune it according to your application's needs.
 If you choose to do so, you can use either [ehcache](http://ehcache.org/) (local cache) or [Hazelcast](http://www.hazelcast.com/) (distributed cache, for use in a clustered environnement)
 
-### Do you want to use a search engine in your application?
-
-[Elasticsearch](https://github.com/elastic/elasticsearch) will be configured using Spring Data Elasticsearch. You can find more information on our [Elasticsearch guide]({{ site.url }}/using-elasticsearch/).
-
-### Do you want to use clustered HTTP sessions?
-
-By default, JHipster uses a HTTP session only for storing [Spring Security](http://docs.spring.io/spring-security/site/index.html)'s authentication and autorisations information. Of course, you can choose to put more data in your HTTP sessions.
-Using HTTP sessions will cause issues if you are running in a cluster, especially if you don't use a load balancer with "sticky sessions".
-If you want to replicate your sessions inside your cluster, choose this option to have [Hazelcast](http://www.hazelcast.com/) configured.
-
-### Do you want to use WebSockets?
-
-Websockets can be enabled using Spring Websocket. We also provide a complete sample to show you how to use the framework efficiently.
-
 ### Would you like to use Maven or Gradle?
 
 You can build your generated Java application either with [Maven](http://maven.apache.org/) or [Gradle](http://www.gradle.org/). Maven is more stable and more mature. Gradle is more flexible, easier to extend, and more hype.
+
+### Which other technologies would you like to use?
+
+This is a multi-select answer, to add one or several other technologies to the application. Available technologies are:
+
+#### Social login (Google, Facebook, Twitter)
+
+This option is only available if you selected an SQL database or a MongoDB database. It adds [Spring Social](http://projects.spring.io/spring-social/) support to JHipster, so end-users can log-in using their Google, Facebook or Twitter account.
+
+#### Search engine using ElasticSearch
+
+[Elasticsearch](https://github.com/elastic/elasticsearch) will be configured using Spring Data Elasticsearch. You can find more information on our [Elasticsearch guide]({{ site.url }}/using-elasticsearch/).
+
+#### Clustered HTTP sessions using Hazelcast
+
+By default, JHipster uses a HTTP session only for storing [Spring Security](http://docs.spring.io/spring-security/site/index.html)'s authentication and authorisation information. Of course, you can choose to put more data in your HTTP sessions.
+Using HTTP sessions will cause issues if you are running in a cluster, especially if you don't use a load balancer with "sticky sessions".
+If you want to replicate your sessions inside your cluster, choose this option to have [Hazelcast](http://www.hazelcast.com/) configured.
+
+#### WebSockets using Spring Websocket
+
+Websockets can be enabled using Spring Websocket. We also provide a complete sample to show you how to use the framework efficiently.
+
+#### Asynchronous messages using Apache Kafka
+
+Use [Apache Kafka]({{ site.url }}/using-kafka/) as a publish/subscribe message broker.
 
 ### Would you like to use the LibSass stylesheet preprocessor for your CSS?
 
@@ -124,7 +150,7 @@ You can build your generated Java application either with [Maven](http://maven.a
 
 ### Would you like to enable translation support with Angular Translate?
 
-By default JHipster provides excellent internationalization support, both on the client side with [Angular Translate](https://angular-translate.github.io/) and on the server side. However, internationalization adds a little overhead, and is a little bit more complex to manage, so you can choose not to install this feature.
+By default JHipster provides excellent internationalization support, both on the client side and on the server side. However, internationalization adds a little overhead, and is a little bit more complex to manage, so you can choose not to install this feature.
 
 ### Which testing frameworks would you like to use?
 
@@ -132,7 +158,7 @@ By default JHipster provide Java unit/integration testing (using Spring's JUnit 
 
 *   Performance tests using Gatling
 *   Behaviour tests using Cucumber
-*   AngularJS integration tests with Protractor
+*   Angular integration tests with Protractor
 
 You can find more information on our ["Running tests" guide]({{ site.url }}/running-tests/).
 
@@ -146,11 +172,13 @@ Here are the options you can pass:
 * `--skip-cache` - Do not remember prompt answers (Default: false)
 * `--skip-install` - Do not automatically install dependencies (Default: false)
 * `--skip-client` - Skip the client-side application generation, so you only have the Spring Boot back-end code generated (Default: false). This is same as running server sub-generator with `yo jhipster:server`.
-* `--skip-server` - Skip the server-side application generation, so you only have the AngularJS front-end code generated (Default: false). This is same as running client sub-generator with `yo jhipster:client`.
+* `--skip-server` - Skip the server-side application generation, so you only have the front-end code generated (Default: false). This is same as running client sub-generator with `yo jhipster:client`.
 * `--skip-user-management` - Skip the user management generation, both on the back-end and on the front-end (Default: false)
 * `--i18n` - Disable or enable i18n when skipping client side generation, has no effect otherwise (Default: true)
 * `--with-entities` - Regenerate the existing entities if they were already generated (using their configuration in the `.jhipster` folder) (Default: false)
-* `--check-install` - Check your installation is correct (Default: true)
+* `--skip-checks` - Skip the check of the required tools (Default: false)
+* `--jhi-prefix` - Add prefix before services, controllers and states name (Default: jhi)
+* `--npm` - Use NPM instead of Yarn (Default: false)
 
 ## <a name="4"></a> Tips
 

@@ -4,7 +4,7 @@ title: JHipster Domain Language
 permalink: /jdl/
 sitemap:
     priority: 0.5
-    lastmod: 2016-04-17T12:00:00-00:00
+    lastmod: 2017-01-27T12:00:00-00:00
 ---
 
 # <i class="fa fa-star"></i> JHipster Domain Language (JDL)
@@ -37,8 +37,9 @@ Here is the full JDL documentation:
   3.6 [Microservice-related options](#microserviceoptions)
 4. [Commenting](#commentingjdl)  
 5. [All the relationships](#jdlrelationships)  
-6. [Annexes](#annexes)
-7. [Issues and bugs](#issues)  
+6. [Constants](#constants)  
+7. [Annexes](#annexes)  
+8. [Issues and bugs](#issues)  
 
 ***
 
@@ -188,6 +189,7 @@ JHipster gives a great choice as one can choose between an image type or any bin
 
   - `AnyBlob` or just `Blob` to create a field of the "any" binary type;
   - `ImageBlob` to create a field meant to be an image.
+  - `TextBlob` to create a field for a CLOB (long text).
 
 And you can create as many DataTypes as you like.
 
@@ -290,7 +292,7 @@ entity C
 
 microservice * with mysuperjhipsterapp except C
 microservice C with myotherjhipsterapp
-search * with ElasticSearch except C
+search * with elasticsearch except C
 ```
 
 The first option is used to tell JHipster that you want your microservice to deal with your entities, whereas the second specifies how and if you want your entities searched.
@@ -334,7 +336,26 @@ JDL possesses its own kind of comment:
 
 Therefore, anything that starts with `//` is considered an internal comment for JDL, and will not be counted as Javadoc.
 
-Please note that the JDL Studio directives that start with `#`` will be ignored during parsing.
+Please note that the JDL Studio directives that start with `#` will be ignored during parsing.
+
+Another form of comments are the following comments:
+```
+entity A {
+  name String /** My super field */
+  count Integer /** My other super field */
+}
+```
+Here A's name will be commented with `My super field`, B with `My other super field`.
+Yes, commas are not mandatory but it's wiser to have them so as not to make mistakes in the code.
+If you want to mix commas and following comments, beware!
+```
+entity A {
+  name String, /** My comment */
+  count Integer
+}
+```
+A's name won't have the comment, because the count will.
+
 
 ## <a name="jdlrelationships"></a>All the relationships
 
@@ -402,6 +423,26 @@ Finally, in this example we have the Car that knows of its drivers, and the Driv
     }
 
 Please note that the owning side of the relationship has to be on the left side
+
+# <a name="constants"></a>Constants
+
+As of JHipster Core v1.2.7, the JDL supports numerical constants.
+Here is an example:
+
+```
+DEFAULT_MIN_LENGTH = 1
+DEFAULT_MAX_LENGTH = 42
+DEFAULT_MIN_BYTES = 20
+DEFAULT_MAX_BYTES = 40
+DEFAULT_MIN = 0
+DEFAULT_MAX = 41
+
+entity A {
+  name String minlength(DEFAULT_MIN_LENGTH) maxlength(DEFAULT_MAX_LENGTH)
+  content TextBlob minbytes(DEFAULT_MIN_BYTES) maxbytes(DEFAULT_MAX_BYTES)
+  count Integer min(DEFAULT_MIN) max(DEFAULT_MAX)
+}
+```
 
 # <a name="annexes"></a>Annexes
 
@@ -501,6 +542,12 @@ Here is the types supported by JDL:
   <tr>
     <td>ImageBlob</td>
     <td>ImageBlob</td>
+    <td></td>
+    <td><dfn>required, minbytes, maxbytes</dfn></td>
+  </tr>
+  <tr>
+    <td>TextBlob</td>
+    <td>TextBlob</td>
     <td></td>
     <td><dfn>required, minbytes, maxbytes</dfn></td>
   </tr>
