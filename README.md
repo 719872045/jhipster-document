@@ -1,11 +1,96 @@
 
+## 介绍
+
 * 这是 JHipster 官方文档的中文翻译，始终于官方 master 分支同步。
 
 * 此项目仅在官方原有文档的基础上，添加需要翻译的 markdown 、html  文件，翻译的文件均以 .zh.md 或 .zh.html 文件结尾，不修改原有文件。
 
 * 部署此项目，使用 deploy.sh 脚本，前提是需要自己安装和 ruby 和 jekyll。
 
+* 此项目已经部署在，可以通过 www.jhipster.cc 来访问。
+ 
+* JHipster qq 交流群：58612944。
+
+* 感谢Q群中所有参与翻译人员,感谢二把刀提供的域名。
+
+## 进度
+#### 未翻译
+- video_tutorial.md
+- using_cassandra.md
+- using_cache.md
+- thanks.md
+- team.md
+- showcase.md
+- setting_up_ci_windows.md
+- setting_up_ci.md
+- setting_up_ci_linux.md
+- setting_up_ci_jenkins2.md
+- setting_up_ci_jenkins1.md
+- running_tests.md
+- releases.md
+- profiles.md
+- production.md
+- policies.md
+- openshift.md
+- oh-my-zsh.md
+- monitoring.md
+- kubernetes.md
+- jhipster_uml.md
+- jhipster-ide.md
+- jhipster-app.md
+- jdl.md
+- heroku.md
+- help.md
+- fisherman.md
+- docker_hub.md
+- development.md
+- customizing-bootstrap-4.md
+- customizing-bootstrap-3.md
+- configuring-ide-visual-studio-code.md
+- configuring_ide_netbeans.md
+- configuring_ide_idea.md
+- configuring_ide_eclipse.md
+- configuring_ide_eclipse_gradle.md
+- configuring_a_corporate_proxy.md
+- common-application-properties.md
+- code-quality.md
+- cloudfoundry.md
+- boxfuse.md
+- aws.md
+- artwork.md
+
+#### 已翻译或正在翻译
+- using_websockets.md
+- using-uaa.md
+- using_oracle.md
+- using_mongodb.md
+- using_kafka.md
+- using_elasticsearch.md
+- using_dtos.md
+- using_angular.md
+- using_angularjs.md
+- upgrading_an_app.md
+- training.md
+- tips.md
+- tech_stack.md
+- shell-plugins.md
+- security.md
+- screenshots.md
+- microservices_architecture.md
+- managing_relationships.md
+- installing_new_languages.md
+- installation.md
+- docker_compose.md
+- creating_a_service.md
+- creating_an_entity.md
+- creating_an_app.md
+- consulting.md
+- configuring_ide.md
+
+
+
 ---
+
 
 This is the source of JHipster's public [Web site](http://jhipster.github.io/).
 =======

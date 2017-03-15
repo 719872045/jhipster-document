@@ -3,9 +3,9 @@
 project_path=$(cd `dirname $0`;pwd)
 page_dir=$project_path/pages/*
 
-zh=""
-no_zh=""
-for file_url in $page_dir;do 
+set zh=""
+set no_zh=""
+for file_url in $page_dir;do
 	if [ -f "$file_url" ];then
 		file_name=$(basename $file_url)
 		file_name_end_fix=${file_name#*.}
@@ -13,16 +13,16 @@ for file_url in $page_dir;do
 		if [[ $end_fix_two_ch != "zh" ]];then
 			zh_file=${file_url/.md/.zh.md}
 			if [ ! -f "$zh_file" ];then  
-				no_zh=$file_name'\n'$no_zh
+				no_zh="- "$file_name'\n'$no_zh
 			else
-				zh=$file_name'\n'$zh
+				zh="- "$file_name'\n'$zh
 			fi  
 		fi
 	fi
 done
 
-echo "未翻译"
+echo "#### 未翻译"
 echo -e $no_zh
 
-echo "已翻译"
+echo "#### 已翻译或正在翻译"
 echo -e $zh
