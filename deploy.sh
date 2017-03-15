@@ -11,6 +11,15 @@ mv $deploy_project_path/index.zh.html $deploy_project_path/index.html
 mv $deploy_project_path/_layouts/default.zh.html $deploy_project_path/_layouts/default.html
 mv $deploy_presentation/index.zh.html $deploy_presentation/index.html
 
+
+## modules 模块替换
+mv $deploy_presentation/modules/creating_a_modul.zh.md  $deploy_presentation/modules/creating_a_modul.md
+mv $deploy_presentation/modules/marketplace.zh.html  $deploy_presentation/modules/marketplace.html
+mv $deploy_presentation/modules/details/details.zh.html $deploy_presentation/modules/details/details.html
+mv $deploy_presentation/modules/list/list.zh.html $deploy_presentation/modules/details/list.html
+
+
+## pages 目录下文件替换
 deploy_project_page_dir=$deploy_project_path/pages/*
 
 for file_url in $deploy_project_page_dir;do 
