@@ -1,0 +1,66 @@
+---
+layout: default
+title: Creating a service
+permalink: /creating-a-service/
+redirect_from:
+  - /creating_a_service.html
+sitemap:
+    priority: 0.7
+    lastmod: 2014-02-17T00:00:00-00:00
+---
+
+# 创建一个 service
+
+## 介绍
+
+这是一个非常简单的 sub-generator，如果和 ["entity" sub-generator]({{site.url}}/creating-an-entity/) 比较的话。
+
+它的目标是生成一个 Spring Service bean，这里主要存放你编写的业务逻辑代码。
+
+为了生成 "bar" 这个 Service bean，你只需要输入：
+
+`yo jhipster:service bar`
+
+_这会生成一个简单的 "BarService"：只有几行代码，但它们通常有很多问题。我们下面来回答最常见的几个问题。_
+
+## 为什么不使用 "entity" generator 来生成 Service 类？
+
+这里我们有两个架构的原则：
+
+*   我们不想造成开发者创建很多无用的 Services 的情况：如果你只是想要对数据库进行基本的 CRUD 操作，你根本不需要一个 Serivce bean。这也是 JHipster 为什么默认不生成它们。
+
+*   我们坚信一个 Service bean 会比一个 repository 更加丰富饱满。一个 Service bean 通常使用多个 repositories 来提供业务逻辑。这也是为什么 JHipster 不能通过 "entity" generator 来生成它们。
+
+## 我们应该为我们的 Service Beans 提供接口吗？
+
+一句话 **No**。
+
+如果你想要查看详细的回答，看这里：
+
+我们使用 Spring 的一个大原因是它提供了 AOP。这项技术允许你添加新的行为在你已有 Beans 的基础上，这是 Spring 事物及安全的运行基础。
+
+为了添加这些行为，需要在你的类上创建代理，有两种方式创建代理：
+
+*   如果你的类使用来接口，Spring 将采用 Java 的一套标准来创建动态代理。
+
+*   如果你的类没有采用接口，Spring 将使用 CGLIB 生成一个新的类，这和 Java 默认机制不一样，但是它运行起来的效果是一样的。
+
+有些人认为接口有利于更好的编写测试，但是我们认为我们不应该为了测试而去修改我们产品的代码，而且现在有些 mocking(模拟) 框架（像 EasyMock）允许你创建非常棒的单元测试，且不需要接口。
+
+所以，在最后，我们发现为 Service 写接口大多数情况下是没有必要的，这也是我们为什么不推荐为 Service 创建接口的原因。（但是我们有保留这个选项让你生成它们）。
+
+## 为什么我们应使用事物来延迟加载 JPA 的映射关系?
+
+默认情况下，JPA 延迟加载了实体间一对多和多对多的映射关系。如果你用了默认的配置，你可能会遇见 `LazyInitializationException`: 这意味着你尝试在事物外部使用为尚未初始化的映射关系。
+
+因为生成的 Service 类默认使用了 `@Transactional` 注解，所有的方法都具有事物特性。这意味着你可以把所有延迟加载的映射关系放在业务方法内部，且不会出现 `LazyInitializationException`。
+
+_小技巧:_ 如果你不需要修改数据，在方法上使用注解 `@Transactional(readOnly = true)`。这是一个很好的性能优化（Hibernate不需要刷新它的第一级缓存，因为我们没有修改任何东西） ，也会为一些 JDBC 驱动带来性能上的提升（Oracle不允许你发送的插入/更新/删除语句）。
+
+## 我们能够为 Service Beans 提供安全保障吗？
+
+当然！只要在你的类或者方法上添加 Spring Security's `@Secured` 注解， 和使用提供的 AuthoritiesConstants 类限制特定用户访问。
+
+## 我们可以监控 Service Beans 吗？
+
+当然！只要添加 Metrics `@Timed` 注解在你想监控的方法上即可。

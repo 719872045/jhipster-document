@@ -25,7 +25,7 @@ Download the `jenkins.war`
 
 Launch the [Docker image](https://hub.docker.com/r/jenkinsci/jenkins/) (the default port has been changed to 18080):
 
-`docker run -d --name jenkins2 -p 18080:8080 -p 50000:50000 jenkinsci/jenkins`
+`docker container run -d --name jenkins2 -p 18080:8080 -p 50000:50000 jenkinsci/jenkins`
 
 ## Create a new Job
 
@@ -44,7 +44,5 @@ Launch the [Docker image](https://hub.docker.com/r/jenkinsci/jenkins/) (the defa
 ![Jenkins2 pipeline]({{ site.url }}/images/jenkins2_pipeline.png)
 
 ## Jenkinsfile
-
-An example of Jenkinsfile which is generated can be found [here](https://raw.githubusercontent.com/jhipster/jhipster-sample-app/master/Jenkinsfile)
 
 ![Jenkins2 result]({{ site.url }}/images/jenkins2_result.png)
