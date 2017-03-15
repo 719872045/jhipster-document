@@ -13,10 +13,11 @@ mv $deploy_presentation/index.zh.html $deploy_presentation/index.html
 
 
 ## modules 模块替换
-mv $deploy_presentation/modules/creating_a_modul.zh.md  $deploy_presentation/modules/creating_a_modul.md
+mv $deploy_presentation/modules/creating_a_module.zh.md  $deploy_presentation/modules/creating_a_module.md
 mv $deploy_presentation/modules/marketplace.zh.html  $deploy_presentation/modules/marketplace.html
-mv $deploy_presentation/modules/details/details.zh.html $deploy_presentation/modules/details/details.html
-mv $deploy_presentation/modules/list/list.zh.html $deploy_presentation/modules/details/list.html
+
+mv $deploy_presentation/modules/marketplace/details/details.zh.html $deploy_presentation/modules/marketplace/details/details.html
+mv $deploy_presentation/modules/marketplace/list/list.zh.html $deploy_presentation/modules/marketplace/details/list.html
 
 
 ## pages 目录下文件替换
