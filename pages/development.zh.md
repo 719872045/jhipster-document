@@ -160,6 +160,14 @@ This will launch:
 - A BrowserSync task that will run on [http://localhost:9000/](http://localhost:9000/), which has a proxy to [http://localhost:9060/](http://localhost:9060/) (the Webpack "hot module reload" server), and which will synchronize the user's clicks/scrolls/inputs
 - The BrowserSync UI, which will be available on [http://localhost:3001/](http://localhost:3001/)
 
+
+### Running Yarn
+
+Direct project dependencies are configured into `package.json`, but transitive dependencies are defined into the `yarn.lock` file, that get generated when `yarn install` is run.
+
+It is advised to check `yarn.lock` [into source control](https://yarnpkg.com/en/docs/yarn-lock#toc-check-into-source-control), so that all team members of a project have the same versions of all dependencies. Running `yarn install` again will regenerate the `yarn.lock` with the latest versions of transitive dependencies.
+
+
 ### Other Yarn/NPM tasks
 
 Those tasks are the same whether you use Yarn or NPM, we use the `yarn` command as an example but you can replace it with `npm`.
