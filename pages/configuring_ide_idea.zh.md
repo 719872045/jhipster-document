@@ -9,17 +9,17 @@ sitemap:
     lastmod: 2015-11-28T17:13:00-00:00
 ---
 
-# <i class="fa fa-keyboard-o"></i> Configuring Intellij IDEA
+# <i class="fa fa-keyboard-o"></i> 配置 Intellij IDEA
 
-## Import your project
+## 导入你的项目
 
 - Simply open your project normally
 - Maven should be detected, and your project will build automatically
 
-## Exclude directories
+## Exclude 文件夹
 
-- Right-click on the `node_modules/` folder
-- Select "Mark Directory As" and select "Excluded"
+- 右击`node_modules/` 文件夹
+- 选择 "Mark Directory As" 和 "Excluded"
 
 ![Exclude]({{ site.url }}/images/configuring_ide_idea_1.png)
 

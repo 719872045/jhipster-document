@@ -1,5 +1,5 @@
 #!/bin/bash
-# 查看 pages 目录下的翻译情况
+## 此脚本用于查看 pages 目录下的翻译情况
 project_path=$(cd `dirname $0`;pwd)
 page_dir=$project_path/pages/*
 
