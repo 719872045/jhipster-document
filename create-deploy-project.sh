@@ -33,5 +33,3 @@ for file_url in $deploy_project_page_dir;do
 		fi
 	fi
 done
-
-nohup ./run-jekyll.sh >out.log 2>&1 &

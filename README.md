@@ -5,13 +5,18 @@
 
 * 此项目仅在官方原有文档的基础上，添加需要翻译的 markdown 、html  文件，翻译的文件均以 .zh.md 或 .zh.html 文件结尾，不修改原有文件。
 
-* 如何部署此项目？在安装ruby 和 jekyll 之后，使用 deploy.sh 脚本。
-
 * 此项目已经部署在，可以通过 www.jhipster.cc 来访问。
  
 * JHipster qq 交流群：58612944。
 
 * 感谢Q群中所有参与翻译人员,感谢二把刀提供的域名。
+
+* 如何部署此项目？
+
+    * 先安装 rvm,ruby,jekyll。
+    * 使用 *./create-deploy-project.sh* 脚本 copy 整个项目，并且替换 *.zh.* 文件，然后 *cd ..* 就可以见到一个带部署的项目
+    * 进入到新生成的项目中，*./run-jekyll.sh* 启动项目
+
 
 
 ## 进度
