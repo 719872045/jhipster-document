@@ -9,36 +9,31 @@ sitemap:
     lastmod: 2016-12-01T00:00:00-00:00
 ---
 
-# <i class="fa fa-code"></i> Using JHipster in development
+# <i class="fa fa-code"></i> 在开发环境中下使用 JHipster
 
-_**Please check our [video tutorial]({{ site.url }}/video-tutorial/) on creating a new JHipster application!**_
+## 摘要
 
-## Summary
+1. [常规配置](#general-configuration)
+2. [运行 Java  服务端](#running-java-server)
+3. [使用 AngularJS 1](#working-with-angularjs-1)
+4. [使用 Angular](#working-with-angular)
+5. [使用 database](#using-a-database)
+6. [国际化](#internationalization)
 
-1. [General configuration](#general-configuration)
-2. [Running the Java server](#running-java-server)
-3. [Working with AngularJS 1](#working-with-angularjs-1)
-4. [Working with Angular](#working-with-angular)
-5. [Using a database](#using-a-database)
-6. [Internationalization](#internationalization)
+## <a name="general-configuration"></a> 常规配置
 
-## <a name="general-configuration"></a> General configuration
+### IDE 配置
 
-### IDE configuration
+如果你还没有配置你的 IDE，先查看 [Configuring your IDE]({{ site.url }}/configuring-ide/) 页面来配置好你的 IDE。
 
-If you haven't configured your IDE yet, please go to the [Configuring your IDE]({{ site.url }}/configuring-ide/) page.
+### 应用配置 
+ 
+默认情况下，JHipster 使用 "development" profile，所以你不需要配置任何东西，如果你想使用其它 profiles，前查看 "[Profiles]({{ site.url }}/profiles/)"。
 
-### Application configuration
 
-By default, JHipster uses the "development" profile, so you don't have to configure anything.
+## <a name="running-java-server"></a> 运行 Java server
 
-If you want more information on the available profiles, please go the section titled "[Profiles]({{ site.url }}/profiles/)".
-
-If you want to configure some specific JHipster properties, have a look at the [common application properties]({{ site.url }}/common-application-properties/) page.
-
-## <a name="running-java-server"></a> Running the Java server
-
-### As a "main" Java class
+### 通过 Java 的 "main" 方法 
 
 From your IDE, right-click on the "Application" class at the root of your Java package hierarchy, and run it directly. You should also be able to debug it as easily.
 
@@ -46,7 +41,7 @@ The application will be available on [http://localhost:8080](http://localhost:80
 
 This application will have "hot reload" enabled by default, so if you compile a class, the Spring application context should refresh itself automatically, without the need to restart the server.
 
-### As a Maven project
+### 如果是 Maven 项目
 
 You can launch the Java server with Maven. JHipster provides a Maven wrapper, so you don't need to install Maven, and you have the guarantee that all project users have the same Maven version:
 
@@ -165,11 +160,13 @@ This will launch:
 - A BrowserSync task that will run on [http://localhost:9000/](http://localhost:9000/), which has a proxy to [http://localhost:9060/](http://localhost:9060/) (the Webpack "hot module reload" server), and which will synchronize the user's clicks/scrolls/inputs
 - The BrowserSync UI, which will be available on [http://localhost:3001/](http://localhost:3001/)
 
+
 ### Running Yarn
 
 Direct project dependencies are configured into `package.json`, but transitive dependencies are defined into the `yarn.lock` file, that get generated when `yarn install` is run.
 
 It is advised to check `yarn.lock` [into source control](https://yarnpkg.com/en/docs/yarn-lock#toc-check-into-source-control), so that all team members of a project have the same versions of all dependencies. Running `yarn install` again will regenerate the `yarn.lock` with the latest versions of transitive dependencies.
+
 
 ### Other Yarn/NPM tasks
 

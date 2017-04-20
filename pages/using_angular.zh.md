@@ -13,7 +13,7 @@ sitemap:
 
 ## 工具
 
-Angular 2+ is 使用 TypeScript 替代了 JavaScript，因此你需要一些特殊的工具，来更加高效的利用它。  我们在 [development]({{site.url}}/development/) 提到的 Angular2+ 的工作流程如下：
+Angular 2+ is 使用 TypeScript 替代了 JavaScript，因此你需要一些特殊的工具，来更加高效的利用它。我们在 [development]({{site.url}}/development/) 提到的 Angular2+ 的工作流程如下：
 
 1. 当你生成一个应用，在所有文件被创建之后，就会触发 `yarn install` 来安装依赖。 
  
@@ -37,12 +37,13 @@ JHipster 客户端代码在 `src/main/webapp` 文件夹下， 代码风格遵循
 
 这篇编码风格指南由 Angular 团队所认可，提供了最佳实践，所有的 Angular 项目都应该遵从。
 
-对应 Angular 路由，我们
+对应 Angular 路由，我们遵循 a dash cased naming 的命名约定，这样可以让 URLs 看起来简洁一致。
 
 For Angular routes we follow a dash cased naming convention so that the URLs are clean and consistent.
+
 When you generate an entity the route names, route URLs and REST API endpoint URLs are generated according to this convention, also entity names are automatically pluralized where required.
 
-这个是项目的主要文件结构：
+这个是前端项目的主要文件结构：
 
     webapp
     ├── app                               - Your application
@@ -95,13 +96,15 @@ When you generate an entity the route names, route URLs and REST API endpoint UR
 
 请注意 'fr' 文件夹取决于你在生成代码时选择的语音。
  
-## Authorizations
+## 授权-Authorizations
 
-JHipster uses [the Angular router](https://angular.io/docs/ts/latest/guide/router.html) to organize the different parts of your client application.
+JHipster 使用 [the Angular router](https://angular.io/docs/ts/latest/guide/router.html) 来组织管理客户端各个不同的 part.
+
 
 For each state, the required authorities are listed in the state's data, and when the authority list is empty it means that the state can be accessed anonymously.
 
 The authorities are also defined on the server-side in the class `AuthoritiesConstants.java`, and logically the client and server-side authorities should be the same.
+
 
 In the example below, the 'sessions' state is designed to be accessed only by authenticated users who have `ROLE_USER` authority:
 
@@ -130,11 +133,12 @@ For example, the following text will only be displayed to users having one of th
 
 *Please note* that those directives only show or hide HTML components on the client-side, and that you also need to secure your code on the server-side!
 
-## The ng-jhipster library
+##  ng-jhipster 库
 
-The ng-jhipster library is free and OSS, and available on [https://github.com/jhipster/ng-jhipster](https://github.com/jhipster/ng-jhipster).
+ng-jhipster 是一个免费开源的库， 具体参见 [https://github.com/jhipster/ng-jhipster](https://github.com/jhipster/ng-jhipster)。
 
-The ng-jhipster library contains utility functions and common components that are used by Angular 2+ applications. They include:
+
+ng-jhipster 库包含了一些有用的函数和常见的组件，他们包括：
 
 - Validation directives
 - Internationalization components
@@ -143,6 +147,7 @@ The ng-jhipster library contains utility functions and common components that ar
 - A notification system (see below)
 
 ### 通知系统
+JHipster 使用自定义的通知系统，来实现从服务端推送事件到客户端。
 
 JHipster uses a custom notification system to send events from the server-side to the client-side, and has i18n-capable `JhiAlertComponent` and `JhiAlertErrorComponent` components which can be used throughout the generated applications.
 

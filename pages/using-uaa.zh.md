@@ -12,59 +12,63 @@ sitemap:
 
 __警告!__ 这是一个新功能，还在<b>BETA</b> 阶段。使用它需要自己承担风险！玩欢迎提供反馈。
  
-JHipster UAA 是一个账号和权限服务，
+JHipster UAA 是一个为 JHipster 微服务应用提供提供账号权限服务的应用，使用了 OAuth2 授权协议协议。
 JHipster UAA is a user accounting and authorizing service for securing JHipster microservices using the OAuth2 authorization protocol.
+
+JHipster UAA 区别于 cloudfoundrys UAA。JHipster UAA 是一个配置了 OAuth2 授权任务的服务，包含了用户和角色信息，并且包装成了一个普通的 JHipster 应用。这允许开发人员可以方便配置自己的 domain。不用受限于其它的 UAAs 。
 
 To clearly distinct JHipster UAA from other "UAA"s as cloudfoundrys UAA, JHipster UAA is an fully configured OAuth2 authorization server with the users and roles endpoints inside, wrapped into a usual JHipster application. This allows the developer to deeply configure every aspect of his user domain, without restricting on policies by other ready-to-use UAAs.
 
-## Summary
+## 摘要
 
-1. [Security claims of microservice architecture](#claims)
+1. [微服务架构下的安全主张](#claims)
 2. [Understanding OAuth2 in this context](#oauth2)
-3. [Using JHipster UAA](#jhipster-uaa)
-  * Basic setup
-  * Understanding the components
-  * Common mistakes
+3. [使用 JHipster UAA](#jhipster-uaa)
+  * 基础设置
+  * 了解各个组件Understanding the components
+  * 常见的错误  
 4. [Securing inter-service-communication using Feign clients](#inter-service-communication)
   * Using Eureka, Ribbon, Hystrix and Feign
   * Using `@AuthorizedFeignClients`
-5. [Testing UAA applications](#testing)
+5. [测试 UAA 应用](#testing)
   * Stubbing feign clients
-  * Emulating OAuth2 authentication
+  * 模拟 OAuth2 授权
 
 
-## <a name="claims"></a> 1. Security claims of microservice architecture
+## <a name="claims"></a> 1. 微服务架构下的安全主张  
 
 Before digging into OAuth2 and its application on JHipster microservices, it's important to clearify the claims to a solid security solution.
 
-### 1. Central authentication
+### 1. 中央授权认证
 
-Since microservices is about building mostly independent and autonomous applications, we want to have an consistent authentication experience, so the user won't notice his requests are served by different applications with possibly individual security configuration.
+首先要了解到，微服务是建立在许多独立和自治的应用上，对此，我们需要一个提供授权服务的应用。用户不需要理会，它的请求是由多个服务，一个独立的授权应用提供。
 
-### 2. Statelessness
 
-The core benefit of building microservices is scalability. So the chosen security solution shouldn't affect this. Holding the users session state on server becomes a tricky task, so a stateless solution is highly preferred in this scenario.
+### 2. 无状态
+ 
+微服务架构的最大好处就是可伸缩性，所选择的安全解决方案，不应该影响到这一点。把用户的session 保存在 server 端是很麻烦的，所有应该优先考虑无状态这一解决方案。
 
-### 3. User/machine access distinction
+### 3. 清楚定义不同 用户/机器 的访问的差别 
 
-There is a need of having a clear distinction of different users, and also different machines. Using microservice architecture leads to building a large multi-purpose data-center of different domains and resources, so there is a need to restrict different clients, such as native apps, multiple SPAs etc. in their access.
+要清楚的定义好不同端的用户访问差别。使用微服务架构，可以构建一个大型的，基于不同领域，不同资源的，多用途的数据访问中心的应用。因此需要限制不同的客户端的访问权限，比如原生app ,多个不同的单页应用的访问等等。
 
-### 4. Fine-grained access control
+### 4. 细粒度的访问控制
 
-While maintaining a centralized roles, there is a need of configuring detailed access control policies in each microservice. A microservice should be unaware of the responsibility of recognizing users, and must just authorize incoming requests.
+中央授权服务包含了所有的角色，因此需要来配置不同服务的访问控制。一个微服务实例，应该清楚的知道它所能识别的用户，并且能够授予请求访问权限。
 
-### 5. Safe from attacks
 
-No matter how much problems a security solution may solve, it should be strong against vulnerabilities as best as possible.
+### 5. 免受攻击
+ 
+不管一个安全解决方案解决了多少问题，它至少是要满足尽可能的安全，避免外部攻击。
 
-### 6. Scalability
+### 6. 可拓展 
 
-Using stateless protocols is not a warranty of the security solution is scalable. In the end, there should not be any single point of failure. An counter-example is a shared auth database or single auth-server-instance, which is hit once per request.
-
+使用无状态的协议，并不能保证一个安全解决方案具有可伸缩性。这个解决方案，不应该存在单独故障问题。举个例子，一个计数器应用，在每个请求中，都要访问授权服务和他的数据库。
 
 ## <a name="oauth2"></a> 2. Understanding OAuth2 in this context
 
-Using the OAuth2 protocol (note: it's a **protocol**, not a framework, not an application) is satisfying all 6 claims. It follows strict standards, what makes this solution compatible to other microservices as well, and remote systems, too. JHipster provides a couple of solutions, based on the following security design:
+使用 OAuth2 协议 (注意: 它是一个  **协议**, 不是一个框架, 也不是一个应用) 可以满足上面的6个主张。它严格遵从标准，适用于微服务应用，也适用于各种远程的系统。JHipster 提供了一套解决方案，基于下面的安全设计：
+It follows strict standards, what makes this solution compatible to other microservices as well, and remote systems, too. JHipster provides a couple of solutions, based on the following security design:
 
 ![JHipster UAA architecture]({{ site.url }}/images/jhipster_uaa.png)
 
@@ -80,16 +84,18 @@ Using the OAuth2 protocol (note: it's a **protocol**, not a framework, not an ap
 * Clients accessing resources without user, are authenticated using "client credentials grant"
 * Every client is defined inside UAA (web-app, internal, ...)
 
-This design may be applied to any microservice architecture independent from language or framework.
+这个设计，可以用在任何一个微服务架构中，无论语言和框架。
+除此之外，我们可以按照以下的规则来进行访问控制：
+ 
+* 用户访问使用 "roles" 和 [RBAC][] 
+* 机器访问使用 "scopes" 和 [RBAC][] 
+* 复杂的访问配置，通过使用 [ABAC][] 来表示，在 "roles" 和 "scopes" 的基础上，利用布尔表达式。
+  * 举个例子：hasRole("ADMIN") and hasScope("shop-manager.read", "shop-manager.write")
+ 
 
-As an addition, the following rules can be applied for access control:
+* 译者备注，[ABAC - 基于属性的权限访问控制](https://www.baidu.com/link?url=MxX4l4e0KduuJnz_q0Pij8EaYboFo_6TIRjswABgMvughe_O81V4ZtYllbEK-pruhBpOAcJl-B-yFX-6j52uzavojwu0YvfiRreloWohNMu&wd=&eqid=88779dc0000d081e0000000658cd4a6a)
 
-* User access is configured using "roles" and [RBAC][]
-* Machines access is configured using "scopes" and [RBAC][]
-* Complex access configuration is expressed using [ABAC][], using boolean expressions over both "roles" and "scopes"
-  * example: hasRole("ADMIN") and hasScope("shop-manager.read", "shop-manager.write")
-
-## <a name="jhipster-uaa"></a> 3. Using JHipster UAA
+## <a name="jhipster-uaa"></a> 3. 使用 JHipster UAA
 
 When scaffolding a JHipster microservice, you may choose the UAA options instead of JWT authentication.
 

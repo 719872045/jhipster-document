@@ -44,7 +44,7 @@ sitemap:
 
 8. 如果是使用 AngularJS 1，安装 Bower: `yarn global add gulp-cli`
 
-8.  安装 JHipster: `yarn global generator-JHipster`
+8.  安装 JHipster: `yarn global add generator-JHipster`
 
 注意：如果你在全局安装这些工具的时候遇到问题，请确保 `$HOME/.config/yarn/global/node_modules/.bin` 在你的环境变量中。(linux 下通过　`echo $PATH` 查看)
 
